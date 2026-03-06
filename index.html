@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>AI UGC Auto Generator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>AI UGC AUTO GENERATOR</h1>
+<p>Upload produk → otomatis generate hook, script, caption, hashtag, dan prompt AI.</p>
+
+<div class="container">
+
+<div class="card">
+
+<label>Upload Foto Produk</label>
+<input type="file" accept="image/*" onchange="previewImage(event)">
+<img id="preview">
+
+<label>Nama Produk</label>
+<input id="product" placeholder="Contoh: Kemeja Pria Linen Premium">
+
+<label>Target Market</label>
+<input id="target" placeholder="Contoh: pria 20-35 tahun">
+
+<label>Kelebihan Produk</label>
+<input id="feature" placeholder="Contoh: adem, premium, jahitan rapi">
+
+<button onclick="generateAll()">AUTO GENERATE</button>
+
+</div>
+
+<div class="card">
+
+<h3>10 Hook Viral</h3>
+<textarea id="hooks"></textarea>
+
+<h3>Script Video</h3>
+<textarea id="script"></textarea>
+
+<h3>Caption</h3>
+<textarea id="caption"></textarea>
+
+<h3>Hashtag</h3>
+<textarea id="hashtags"></textarea>
+
+<h3>Prompt AI Model</h3>
+<textarea id="prompt"></textarea>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
