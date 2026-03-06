@@ -27,7 +27,7 @@ border:none;
 }
 
 textarea{
-height:100px;
+height:90px;
 }
 
 button{
@@ -37,8 +37,7 @@ font-weight:bold;
 cursor:pointer;
 }
 
-img{
-max-width:100%;
-margin-top:10px;
-border-radius:8px;
+canvas{
+border:2px solid white;
+max-width:360px;
 }

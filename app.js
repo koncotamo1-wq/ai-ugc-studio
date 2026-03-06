@@ -1,17 +1,22 @@
 
-function previewImage(event){
+let uploadedImage=null
+let mediaRecorder
+let recordedChunks=[]
+
+document.getElementById("imageUpload").addEventListener("change",function(e){
 
 let reader=new FileReader()
 
 reader.onload=function(){
-document.getElementById("preview").src=reader.result
+uploadedImage=new Image()
+uploadedImage.src=reader.result
 }
 
-reader.readAsDataURL(event.target.files[0])
+reader.readAsDataURL(e.target.files[0])
 
-}
+})
 
-function generateAll(){
+function generateContent(){
 
 let product=document.getElementById("product").value
 let target=document.getElementById("target").value
@@ -21,37 +26,77 @@ let hooks=[
 `Serius ${product} ini murah tapi kualitasnya premium`,
 `${product} ini lagi viral di TikTok`,
 `Baru nemu ${product} sebagus ini di harga segini`,
-`Kalau cari ${product}, lihat ini dulu`,
-`Ini alasan kenapa ${product} banyak yang beli`,
-`${product} ini dipakai seharian tetap adem`,
-`Jarang ada ${product} kualitas begini`,
-`Harga ${product} segini tapi feelnya mahal`,
-`${product} cocok buat dipakai harian`,
-`Produk ini lagi ramai di TikTok Shop`
+`Kalau cari ${product}, lihat ini dulu`
 ]
 
 document.getElementById("hooks").value=hooks.join("\n")
 
 document.getElementById("script").value=
+`Scene1 Hook
+${hooks[0]}
 
-`Scene 1 Hook
-(pilih salah satu hook)
+Scene2 Highlight
+Cocok buat ${target}
+Bahannya ${feature}
 
-Scene 2 Highlight
-Produk ini cocok buat ${target}.
-Bahannya ${feature}.
-
-Scene 3 CTA
-Kalau lagi cari ${product},
-cek keranjang kuning sekarang.`
+Scene3 CTA
+Cek keranjang kuning`
 
 document.getElementById("caption").value=
-`${product} lagi viral di TikTok. Bahannya ${feature}. Wajib coba.`
+`${product} lagi viral. Bahannya ${feature}.`
+}
 
-document.getElementById("hashtags").value=
-`#tiktokshop #racuntiktok #fyp #fashion #outfit #viralproduk`
+async function createVideo(){
 
-document.getElementById("prompt").value=
-`Ultra realistic fashion photo of a model wearing ${product}, studio lighting, commercial fashion photography, sharp fabric detail, vertical 9:16`
+let canvas=document.getElementById("videoCanvas")
+let ctx=canvas.getContext("2d")
+
+const stream=canvas.captureStream(30)
+mediaRecorder=new MediaRecorder(stream)
+
+recordedChunks=[]
+
+mediaRecorder.ondataavailable=e=>{
+if(e.data.size>0) recordedChunks.push(e.data)
+}
+
+mediaRecorder.start()
+
+let hooks=document.getElementById("hooks").value.split("\n")
+
+for(let i=0;i<3;i++){
+
+ctx.fillStyle="black"
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+if(uploadedImage){
+
+ctx.drawImage(uploadedImage,140,300,800,800)
+
+}
+
+ctx.fillStyle="white"
+ctx.font="60px Arial"
+
+ctx.fillText(hooks[0]||"Hook",100,200)
+
+await new Promise(r=>setTimeout(r,3000))
+
+}
+
+mediaRecorder.stop()
+
+}
+
+function downloadVideo(){
+
+let blob=new Blob(recordedChunks,{type:"video/webm"})
+
+let url=URL.createObjectURL(blob)
+
+let a=document.createElement("a")
+a.href=url
+a.download="ugc-video.webm"
+a.click()
 
 }
